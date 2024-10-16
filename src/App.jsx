@@ -109,9 +109,9 @@ const App = () => {
             <li key={member.name}>
               <img src={member.img} />
               <p>{member.name}</p>
-              <p>{member.price}</p>
-              <p>{member.strength}</p>
-              <p>{member.agility}</p>
+              <p>Price: {member.price}</p>
+              <p>Strength: {member.strength}</p>
+              <p>Agility: {member.agility}</p>
               <button onClick={() => handleRemoveFighter(member)}>Remove</button>
             </li>
           );
@@ -127,7 +127,7 @@ const App = () => {
               <p>Price: {character.price}</p>
               <p>Strength: {character.strength}</p>
               <p>Agility: {character.agility}</p>
-              <button onClick={() => handleAddFighter(character)} disabled={character.price > money}>
+              <button onClick={() => handleAddFighter(character)} disabled={character.price > money || team.includes(character)}>
                 Add
               </button>
             </li>
