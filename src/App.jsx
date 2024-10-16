@@ -79,40 +79,67 @@ const App = () => {
     },
   ]);
 
-  const handleAddFighter = (newMember) => {
-    const newTeam = [...team, newMember];
-    setTeam(newTeam);
-    setMoney(money - newMember.price);
-    setStrength(strength + newMember.strength);
-    setAgility(agility + newMember.agility);
+  // ! Solution
+  const getTotal = (attribute, team) => {
+    return team.reduce((acc, character) => {
+      return acc + character[attribute];
+    }, 0);
   };
 
-  const handleRemoveFighter = (removeMember) => {
-    const deleteMember = [...team];
-    setTeam(deleteMember.filter((a) => a.name !== removeMember.name));
-    setMoney(money + removeMember.price);
-    setStrength(strength - removeMember.strength);
-    setAgility(agility - removeMember.agility);
+  const handleAddFighter = (character) => {
+    const newTeam = [...team, character];
+    setTeam(newTeam);
+    setMoney(money - character.price);
+    // setStrength(strength + character.strength);
+    // setAgility(agility + character.agility);
+    // ! Solution
+    let strength = getTotal("strength", newTeam);
+    setStrength(strength);
+    let agility = getTotal("agility", newTeam);
+    setAgility(agility);
+    const newZombieFighters = zombieFighters.filter((tm) => {
+      return tm !== character;
+    });
+    setZombieFighters(newZombieFighters);
+  };
+
+  const handleRemoveFighter = (character) => {
+    // const deleteMember = [...team];
+    // setTeam(deleteMember.filter((a) => a.name !== character.name));
+    setMoney(money + character.price);
+    // setStrength(strength - character.strength);
+    // setAgility(agility - character.agility);
+    // ! Solution
+    const newTeam = team.filter((tm) => {
+      return tm !== character;
+    });
+    setTeam(newTeam);
+    let strength = getTotal("strength", newTeam);
+    setStrength(strength);
+    let agility = getTotal("agility", newTeam);
+    setAgility(agility);
+    const newZombieFighters = [...zombieFighters, character];
+    setZombieFighters(newZombieFighters);
   };
 
   return (
     <>
       <h1>Zombie Fighters</h1>
       <h2>Money: {money}</h2>
-      <h2>Team Strength: {strength > 0 ? strength : "0"}</h2>
-      <h2>Team Agility: {agility > 0 ? agility : "0"}</h2>
+      <h2>Team Strength: {strength}</h2>
+      <h2>Team Agility: {agility}</h2>
       <h2>Team: </h2>
       <p>{team.length <= 0 ? "You should pick some team members!" : null}</p>
       <ul>
-        {team.map((member) => {
+        {team.map((character) => {
           return (
-            <li key={member.name}>
-              <img src={member.img} />
-              <p>{member.name}</p>
-              <p>Price: {member.price}</p>
-              <p>Strength: {member.strength}</p>
-              <p>Agility: {member.agility}</p>
-              <button onClick={() => handleRemoveFighter(member)}>Remove</button>
+            <li key={character.name}>
+              <img src={character.img} />
+              <p>{character.name}</p>
+              <p>Price: {character.price}</p>
+              <p>Strength: {character.strength}</p>
+              <p>Agility: {character.agility}</p>
+              <button onClick={() => handleRemoveFighter(character)}>Remove</button>
             </li>
           );
         })}
@@ -128,7 +155,7 @@ const App = () => {
               <p>Strength: {character.strength}</p>
               <p>Agility: {character.agility}</p>
               <button onClick={() => handleAddFighter(character)} disabled={character.price > money || team.includes(character)}>
-                Add
+                {character.price > money ? "Overdrawn" : "Add"}
               </button>
             </li>
           );
