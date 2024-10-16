@@ -99,8 +99,8 @@ const App = () => {
     <>
       <h1>Zombie Fighters</h1>
       <h2>Money: {money}</h2>
-      <h2>Team Strength: {strength}</h2>
-      <h2>Team Agility: {agility}</h2>
+      <h2>Team Strength: {strength > 0 ? strength : "0"}</h2>
+      <h2>Team Agility: {agility > 0 ? agility : "0"}</h2>
       <h2>Team: </h2>
       <p>{team.length <= 0 ? "You should pick some team members!" : null}</p>
       <ul>
